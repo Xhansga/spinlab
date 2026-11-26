@@ -1,166 +1,1396 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#10152f">
-<title>SpinLab — Roda Keberuntungan</title>
+<title>SpinLab - Roda Keberuntungan</title>
+
 <style>
-:root{--bg:#10152f;--panel:#1b2345;--panel2:#222c52;--text:#f7f8ff;--muted:#aab4d2;--accent:#8b7cff;--pink:#ff6fae;--cyan:#55d6e8;--line:rgba(255,255,255,.12)}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;background:radial-gradient(circle at 15% 5%,#29366c 0,transparent 32%),radial-gradient(circle at 90% 30%,#42275f 0,transparent 28%),var(--bg)}
-button,textarea,input{font:inherit}button{cursor:pointer;border:0;color:inherit;font-weight:750;transition:.2s}button:disabled{opacity:.45;cursor:not-allowed;transform:none!important}
-.topbar{max-width:1400px;margin:auto;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{display:flex;align-items:center;gap:12px;font-weight:900;font-size:22px;letter-spacing:-.7px}.brand-icon{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--pink));box-shadow:0 8px 25px #8b7cff55;font-size:23px}.tag{font-size:12px;color:#d7d9ff;border:1px solid #ffffff24;background:#ffffff0b;padding:8px 12px;border-radius:999px}
-main{max-width:1400px;margin:0 auto;padding:10px 28px 42px}.intro{text-align:center;margin:8px 0 28px}.intro h1{font-size:clamp(28px,4vw,46px);letter-spacing:-1.8px;margin:0 0 8px}.intro p{color:var(--muted);margin:0}
-.layout{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(330px,.75fr);gap:22px;align-items:start}.panel{background:linear-gradient(145deg,#20294dE8,#171e3deF);border:1px solid var(--line);border-radius:24px;box-shadow:0 18px 55px #05091d66}
-.wheel-panel{padding:22px;display:flex;flex-direction:column;align-items:center;min-width:0}.wheel-head{width:100%;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.wheel-head h2,.side-title{font-size:16px;margin:0}.live-pill{font-size:11px;color:#a8f5df;background:#2caa7a22;border:1px solid #54d6a755;padding:6px 10px;border-radius:30px}
-.wheel-wrap{width:min(100%,620px);aspect-ratio:1;position:relative;display:grid;place-items:center;filter:drop-shadow(0 16px 25px #05091d88)}canvas{width:100%;height:100%;display:block}.pointer{position:absolute;z-index:2;top:-4px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:19px solid transparent;border-right:19px solid transparent;border-top:42px solid #fff;filter:drop-shadow(0 4px 5px #0008)}.hub{position:absolute;z-index:1;width:16%;aspect-ratio:1;border-radius:50%;background:linear-gradient(145deg,#fff,#d9ddf7);border:7px solid #333c65;box-shadow:0 4px 15px #0007;display:grid;place-items:center;color:#252b50;font-size:clamp(10px,1.4vw,17px);font-weight:1000;letter-spacing:-.8px}
-.spin-btn{margin:17px 0 5px;padding:16px 42px;border-radius:999px;background:linear-gradient(100deg,#8c7cff,#ef69b4);box-shadow:0 9px 28px #9b6fff55;font-size:17px;letter-spacing:.5px}.spin-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 13px 34px #9b6fff77}.hint{font-size:12px;color:var(--muted);text-align:center}
-.sidebar{display:flex;flex-direction:column;gap:16px}.editor{padding:20px}.side-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.count{font-size:12px;color:var(--muted)}textarea{width:100%;min-height:260px;resize:vertical;background:#101733;border:1px solid #ffffff1c;border-radius:15px;color:var(--text);padding:15px;line-height:1.7;outline:none}textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px #8b7cff22}textarea::placeholder{color:#7783a8}
-.legend{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 14px}.legend-item{font-size:11px;color:var(--muted);background:#ffffff08;padding:9px;border-radius:10px}.legend-item b{display:block;color:var(--text);font-size:12px;margin-bottom:3px}
-.actions{display:flex;flex-wrap:wrap;gap:8px}.btn{padding:10px 13px;border-radius:11px;background:#ffffff12;border:1px solid #ffffff16;font-size:12px}.btn:hover{background:#ffffff20;transform:translateY(-1px)}.btn.primary{background:var(--accent);border-color:transparent}.btn.danger{color:#ff9db5}
-.settings{padding:18px 20px}.setting-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}.setting-row:last-child{border:0}.setting-row small{display:block;color:var(--muted);font-size:11px;margin-top:3px}.switch{appearance:none;width:42px;height:24px;background:#59617f;border-radius:30px;position:relative;cursor:pointer;flex:none;transition:.2s}.switch:checked{background:#8b7cff}.switch:before{content:"";position:absolute;width:18px;height:18px;left:3px;top:3px;border-radius:50%;background:white;transition:.2s}.switch:checked:before{left:21px}
-select{background:#101733;color:var(--text);border:1px solid var(--line);border-radius:9px;padding:7px 9px}.history{padding:18px 20px}.history-list{display:flex;flex-direction:column;gap:7px;max-height:190px;overflow:auto;margin-top:12px}.history-item{display:flex;align-items:center;justify-content:space-between;background:#ffffff09;border-radius:10px;padding:9px 11px;font-size:12px}.history-item span:last-child{color:var(--muted);font-size:10px}
-.status{min-height:20px;text-align:center;color:#ffd98b;font-size:12px;margin-top:8px}
-.footer{text-align:center;color:#7480a5;font-size:11px;margin-top:25px}
-.modal{position:fixed;inset:0;background:#070b1dcc;display:none;place-items:center;padding:20px;z-index:10;backdrop-filter:blur(8px)}.modal.show{display:grid}.winner-card{width:min(100%,440px);text-align:center;padding:35px 28px;border-radius:28px;background:linear-gradient(145deg,#2b3565,#171e3e);border:1px solid #ffffff2b;box-shadow:0 25px 80px #0009;animation:pop .35s ease}.trophy{font-size:54px}.winner-card h2{font-size:14px;color:#c5caff;text-transform:uppercase;letter-spacing:2px;margin:10px 0}.winner-name{font-size:clamp(27px,6vw,42px);font-weight:950;overflow-wrap:anywhere;margin:12px 0 25px;background:linear-gradient(90deg,#fff,#ffb4d4);color:transparent;background-clip:text}.winner-card .btn{padding:12px 22px}
-@keyframes pop{from{opacity:0;transform:translateY(15px) scale(.95)}to{opacity:1;transform:none}}
-@media(max-width:900px){.layout{grid-template-columns:1fr}.wheel-wrap{width:min(100%,570px)}.sidebar{display:grid;grid-template-columns:1fr 1fr}.editor{grid-row:span 2}}@media(max-width:620px){.topbar{padding:16px}.tag{display:none}main{padding:5px 14px 28px}.intro{margin:10px 0 20px}.wheel-panel{padding:14px}.sidebar{display:flex}.editor{padding:16px}textarea{min-height:220px}.spin-btn{padding:14px 34px}}
+:root {
+    --bg: #10152f;
+    --panel: #1b2345;
+    --text: #f7f8ff;
+    --muted: #aab4d2;
+    --accent: #8b7cff;
+    --pink: #ff6fae;
+    --line: rgba(255,255,255,.12);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--text);
+    font-family: Inter, Arial, sans-serif;
+    background:
+        radial-gradient(circle at 15% 5%, #29366c 0, transparent 32%),
+        radial-gradient(circle at 90% 30%, #42275f 0, transparent 28%),
+        var(--bg);
+}
+
+button, textarea, select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    color: inherit;
+    font-weight: 700;
+}
+
+.topbar {
+    max-width: 1400px;
+    margin: auto;
+    padding: 22px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 900;
+    font-size: 23px;
+}
+
+.brand-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, var(--accent), var(--pink));
+    box-shadow: 0 8px 25px #8b7cff55;
+    font-size: 23px;
+}
+
+.tag {
+    font-size: 12px;
+    color: #d7d9ff;
+    border: 1px solid #ffffff24;
+    background: #ffffff0b;
+    padding: 8px 12px;
+    border-radius: 999px;
+}
+
+main {
+    max-width: 1400px;
+    margin: auto;
+    padding: 10px 28px 42px;
+}
+
+.intro {
+    text-align: center;
+    margin: 8px 0 28px;
+}
+
+.intro h1 {
+    font-size: clamp(28px, 4vw, 46px);
+    letter-spacing: -1.8px;
+    margin: 0 0 8px;
+}
+
+.intro p {
+    color: var(--muted);
+    margin: 0;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(330px, .75fr);
+    gap: 22px;
+    align-items: start;
+}
+
+.panel {
+    background: linear-gradient(145deg, #20294de8, #171e3def);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    box-shadow: 0 18px 55px #05091d66;
+}
+
+.wheel-panel {
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 0;
+}
+
+.wheel-head {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.wheel-head h2,
+.side-title {
+    font-size: 16px;
+    margin: 0;
+}
+
+.live-pill {
+    font-size: 11px;
+    color: #a8f5df;
+    background: #2caa7a22;
+    border: 1px solid #54d6a755;
+    padding: 6px 10px;
+    border-radius: 30px;
+}
+
+.wheel-wrap {
+    width: min(100%, 620px);
+    aspect-ratio: 1;
+    position: relative;
+    display: grid;
+    place-items: center;
+    filter: drop-shadow(0 16px 25px #05091d88);
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.pointer {
+    position: absolute;
+    z-index: 3;
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 19px solid transparent;
+    border-right: 19px solid transparent;
+    border-top: 42px solid white;
+    filter: drop-shadow(0 4px 5px #0008);
+}
+
+/* TOMBOL SPIN DI TENGAH RODA */
+
+.hub {
+    position: absolute;
+    z-index: 2;
+    width: 17%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #ffffff, #d9ddf7);
+    border: 7px solid #333c65;
+    box-shadow: 0 4px 15px #0007;
+    display: grid;
+    place-items: center;
+    color: #252b50;
+    font-size: clamp(12px, 1.5vw, 18px);
+    font-weight: 1000;
+    letter-spacing: -1px;
+    cursor: pointer;
+    user-select: none;
+    transition: transform .2s, box-shadow .2s;
+}
+
+.hub:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 25px #8b7cff;
+}
+
+.hub:active {
+    transform: scale(.94);
+}
+
+.hub.disabled {
+    opacity: .5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.editor {
+    padding: 20px;
+}
+
+.side-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.count {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+textarea {
+    width: 100%;
+    min-height: 260px;
+    resize: vertical;
+    background: #101733;
+    border: 1px solid #ffffff1c;
+    border-radius: 15px;
+    color: var(--text);
+    padding: 15px;
+    line-height: 1.7;
+    outline: none;
+}
+
+textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px #8b7cff22;
+}
+
+textarea::placeholder {
+    color: #7783a8;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.btn {
+    padding: 10px 13px;
+    border-radius: 11px;
+    background: #ffffff12;
+    border: 1px solid #ffffff16;
+    font-size: 12px;
+}
+
+.btn:hover {
+    background: #ffffff20;
+    transform: translateY(-1px);
+}
+
+.btn.primary {
+    background: var(--accent);
+    border-color: transparent;
+}
+
+.btn.danger {
+    color: #ff9db5;
+}
+
+.settings {
+    padding: 18px 20px;
+}
+
+.setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 13px;
+}
+
+.setting-row:last-child {
+    border: 0;
+}
+
+.setting-row small {
+    display: block;
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+.switch {
+    appearance: none;
+    width: 42px;
+    height: 24px;
+    background: #59617f;
+    border-radius: 30px;
+    position: relative;
+    cursor: pointer;
+    flex: none;
+    transition: .2s;
+}
+
+.switch:checked {
+    background: #8b7cff;
+}
+
+.switch:before {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    left: 3px;
+    top: 3px;
+    border-radius: 50%;
+    background: white;
+    transition: .2s;
+}
+
+.switch:checked:before {
+    left: 21px;
+}
+
+select {
+    background: #101733;
+    color: var(--text);
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    padding: 7px 9px;
+}
+
+.history {
+    padding: 18px 20px;
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    max-height: 190px;
+    overflow: auto;
+    margin-top: 12px;
+}
+
+.history-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #ffffff09;
+    border-radius: 10px;
+    padding: 9px 11px;
+    font-size: 12px;
+}
+
+.history-item span:last-child {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.status {
+    min-height: 20px;
+    text-align: center;
+    color: #ffd98b;
+    font-size: 12px;
+    margin-top: 12px;
+}
+
+.footer {
+    text-align: center;
+    color: #7480a5;
+    font-size: 11px;
+    margin-top: 25px;
+}
+
+/* POPUP PEMENANG */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: #070b1dcc;
+    display: none;
+    place-items: center;
+    padding: 20px;
+    z-index: 10;
+    backdrop-filter: blur(8px);
+}
+
+.modal.show {
+    display: grid;
+}
+
+.winner-card {
+    width: min(100%, 440px);
+    text-align: center;
+    padding: 35px 28px;
+    border-radius: 28px;
+    background: linear-gradient(145deg, #2b3565, #171e3e);
+    border: 1px solid #ffffff2b;
+    box-shadow: 0 25px 80px #0009;
+    animation: pop .35s ease;
+}
+
+.trophy {
+    font-size: 54px;
+}
+
+.winner-card h2 {
+    font-size: 14px;
+    color: #c5caff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 10px 0;
+}
+
+.winner-name {
+    font-size: clamp(27px, 6vw, 42px);
+    font-weight: 950;
+    overflow-wrap: anywhere;
+    margin: 12px 0 25px;
+    background: linear-gradient(90deg, #fff, #ffb4d4);
+    color: transparent;
+    background-clip: text;
+}
+
+.winner-card .btn {
+    padding: 12px 22px;
+}
+
+@keyframes pop {
+    from {
+        opacity: 0;
+        transform: translateY(15px) scale(.95);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media(max-width: 900px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    .wheel-wrap {
+        width: min(100%, 570px);
+    }
+}
+
+@media(max-width: 620px) {
+    .topbar {
+        padding: 16px;
+    }
+
+    .tag {
+        display: none;
+    }
+
+    main {
+        padding: 5px 14px 28px;
+    }
+
+    .intro {
+        margin: 10px 0 20px;
+    }
+
+    .wheel-panel {
+        padding: 14px;
+    }
+
+    .wheel-wrap {
+        width: 100%;
+    }
+
+    .editor {
+        padding: 16px;
+    }
+
+    textarea {
+        min-height: 220px;
+    }
+}
 </style>
 </head>
+
 <body>
-<header class="topbar"><div class="brand"><div class="brand-icon">✦</div>SpinLab</div><div class="tag">RODA UNDIAN INTERAKTIF</div></header>
-<main>
-  <section class="intro"><h1>Siapa yang beruntung hari ini? 🎯</h1><p>Masukkan nama, atur urutan khusus, lalu putar rodanya!</p></section>
-  <section class="layout">
-    <div class="panel wheel-panel">
-      <div class="wheel-head"><h2>🎡 Roda Keberuntungan</h2><span class="live-pill">● SIAP BERPUTAR</span></div>
-      <div class="wheel-wrap"><div class="pointer"></div><canvas id="wheel" width="900" height="900" aria-label="Roda undian"></canvas><div class="hub">SPIN</div></div>
-      <button class="spin-btn" id="spinBtn">✦ PUTAR SEKARANG</button>
-      <div class="hint">Tekan tombol atau gunakan Ctrl + Enter</div><div class="status" id="status" aria-live="polite"></div>
+
+<header class="topbar">
+    <div class="brand">
+        <div class="brand-icon">✦</div>
+        SpinLab
     </div>
-    <aside class="sidebar">
-      <div class="panel editor">
-        <div class="side-heading"><h2 class="side-title">📝 Daftar Peserta</h2><span class="count" id="count">0 nama</span></div>
-        <textarea id="names" spellcheck="false" aria-label="Daftar nama" placeholder="Ketik satu nama per baris...&#10;Contoh:&#10;Andi,&#10;Budi&#10;Citra&#10;Dewi."></textarea>
-        <div class="legend">
-          <div class="legend-item"><b>🥇 Nama,</b>Giliran pertama</div>
-          <div class="legend-item"><b>🏁 Nama.</b>Giliran terakhir</div>
-          <div class="legend-item" style="grid-column:1/-1"><b>🎲 Nama</b>Diundi secara acak di antara keduanya</div>
+    <div class="tag">RODA UNDIAN INTERAKTIF</div>
+</header>
+
+<main>
+
+    <section class="intro">
+        <h1>Siapa yang beruntung hari ini? 🎯</h1>
+        <p>Masukkan nama, lalu putar roda keberuntungan!</p>
+    </section>
+
+    <section class="layout">
+
+        <!-- RODA SPIN -->
+
+        <div class="panel wheel-panel">
+
+            <div class="wheel-head">
+                <h2>🎡 Roda Keberuntungan</h2>
+                <span class="live-pill">● SIAP BERPUTAR</span>
+            </div>
+
+            <div class="wheel-wrap">
+
+                <div class="pointer"></div>
+
+                <canvas id="wheel"
+                        width="900"
+                        height="900">
+                </canvas>
+
+                <div class="hub"
+                     id="hubSpin"
+                     role="button"
+                     tabindex="0"
+                     aria-label="Putar roda">
+                    SPIN
+                </div>
+
+            </div>
+
+            <div class="status" id="status">
+                Siap menentukan pemenang!
+            </div>
+
         </div>
-        <div class="actions">
-          <button class="btn primary" id="applyBtn">Terapkan daftar</button><button class="btn" id="shuffleBtn">Acak urutan</button><button class="btn" id="sampleBtn">Contoh nama</button><button class="btn danger" id="clearBtn">Hapus semua</button>
-        </div>
-      </div>
-      <div class="panel settings">
-        <h2 class="side-title">⚙️ Pengaturan</h2>
-        <div class="setting-row"><div><b>Hapus pemenang</b><small>Nama terpilih tidak ikut putaran berikutnya</small></div><input class="switch" type="checkbox" id="removeWinner" checked></div>
-        <div class="setting-row"><div><b>Durasi putaran</b><small>Lama animasi roda</small></div><select id="duration"><option value="3">3 detik</option><option value="5" selected>5 detik</option><option value="7">7 detik</option><option value="10">10 detik</option></select></div>
-        <div class="setting-row"><div><b>Efek suara</b><small>Bunyi saat roda berhenti</small></div><input class="switch" type="checkbox" id="sound" checked></div>
-      </div>
-      <div class="panel history"><div class="side-heading"><h2 class="side-title">🏆 Riwayat Pemenang</h2><button class="btn" id="clearHistory">Bersihkan</button></div><div class="history-list" id="history"><div class="hint">Belum ada pemenang.</div></div></div>
-    </aside>
-  </section>
-  <div class="footer">SpinLab • Dibuat untuk pembelajaran, kelas, acara, dan undian yang menyenangkan.</div>
+
+        <!-- SIDEBAR -->
+
+        <aside class="sidebar">
+
+            <!-- DAFTAR PESERTA -->
+
+            <div class="panel editor">
+
+                <div class="side-heading">
+                    <h2 class="side-title">📝 Daftar Peserta</h2>
+                    <span class="count" id="count">0 nama</span>
+                </div>
+
+                <textarea id="names"
+                    spellcheck="false"
+                    placeholder="Masukkan nama peserta satu per baris...&#10;&#10;Contoh:&#10;Andi,&#10;Budi&#10;Citra&#10;Dewi.">
+                </textarea>
+
+                <div class="actions">
+
+                    <button class="btn primary" id="applyBtn">
+                        Terapkan Daftar
+                    </button>
+
+                    <button class="btn" id="shuffleBtn">
+                        Acak Urutan
+                    </button>
+
+                    <button class="btn" id="sampleBtn">
+                        Contoh Nama
+                    </button>
+
+                    <button class="btn danger" id="clearBtn">
+                        Hapus Semua
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- PENGATURAN -->
+
+            <div class="panel settings">
+
+                <h2 class="side-title">⚙️ Pengaturan</h2>
+
+                <div class="setting-row">
+                    <div>
+                        <b>Hapus Pemenang</b>
+                        <small>
+                            Nama terpilih tidak ikut putaran berikutnya
+                        </small>
+                    </div>
+
+                    <input class="switch"
+                           type="checkbox"
+                           id="removeWinner"
+                           checked>
+                </div>
+
+                <div class="setting-row">
+                    <div>
+                        <b>Durasi Putaran</b>
+                        <small>Lama animasi roda</small>
+                    </div>
+
+                    <select id="duration">
+                        <option value="3">3 detik</option>
+                        <option value="5" selected>5 detik</option>
+                        <option value="7">7 detik</option>
+                        <option value="10">10 detik</option>
+                    </select>
+                </div>
+
+                <div class="setting-row">
+                    <div>
+                        <b>Efek Suara</b>
+                        <small>Bunyi saat roda berhenti</small>
+                    </div>
+
+                    <input class="switch"
+                           type="checkbox"
+                           id="sound"
+                           checked>
+                </div>
+
+            </div>
+
+            <!-- RIWAYAT PEMENANG -->
+
+            <div class="panel history">
+
+                <div class="side-heading">
+                    <h2 class="side-title">🏆 Riwayat Pemenang</h2>
+
+                    <button class="btn" id="clearHistory">
+                        Bersihkan
+                    </button>
+                </div>
+
+                <div class="history-list" id="history">
+                    <div class="hint">
+                        Belum ada pemenang.
+                    </div>
+                </div>
+
+            </div>
+
+        </aside>
+
+    </section>
+
+    <div class="footer">
+        SpinLab • Roda Keberuntungan Interaktif
+    </div>
+
 </main>
-<div class="modal" id="winnerModal" role="dialog" aria-modal="true" aria-labelledby="winnerTitle"><div class="winner-card"><div class="trophy">🏆</div><h2 id="winnerTitle">Pemenang terpilih!</h2><div class="winner-name" id="winnerName">Nama</div><button class="btn primary" id="closeModal">Lanjutkan</button></div></div>
+
+<!-- POPUP PEMENANG -->
+
+<div class="modal" id="winnerModal"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="winnerTitle">
+
+    <div class="winner-card">
+
+        <div class="trophy">🏆</div>
+
+        <h2 id="winnerTitle">
+            Pemenang Terpilih!
+        </h2>
+
+        <div class="winner-name" id="winnerName">
+            Nama
+        </div>
+
+        <button class="btn primary" id="closeModal">
+            Lanjutkan
+        </button>
+
+    </div>
+
+</div>
+
 <script>
+
 (() => {
- const $=id=>document.getElementById(id);
- const canvas=$('wheel'),ctx=canvas.getContext('2d');
- const palette=['#7868e6','#ed6a9e','#2db8bd','#f1a64b','#5278d8','#a66bd1','#e06c58','#3d9b78','#d45eae','#6d8fd5'];
- let entries=[],angle=-Math.PI/2,spinning=false,history=[];
- const TAU=Math.PI*2;
- const secureIndex=max=>{if(max<=1)return 0;const a=new Uint32Array(1);const limit=Math.floor(0x100000000/max)*max;do{crypto.getRandomValues(a)}while(a[0]>=limit);return a[0]%max};
- function parseNames(){
-   return $('names').value.split(/\r?\n/).map((raw,i)=>{
-     const value=raw.trim();if(!value)return null;
-     const last=value.slice(-1),special=last===','||last==='.';
-     return {id:i+'-'+value+'-'+Math.random().toString(36).slice(2,7),name:special?value.slice(0,-1).trim():value,order:last===','?'first':last==='.'?'last':'normal'};
-   }).filter(x=>x&&x.name);
- }
- function validate(list){
-   const first=list.filter(x=>x.order==='first'),last=list.filter(x=>x.order==='last');
-   if(first.length>1||last.length>1){$('status').textContent='Gunakan maksimal satu nama bertanda koma dan satu nama bertanda titik.';return false}
-   if(list.length<2){$('status').textContent='Masukkan minimal dua nama untuk memutar roda.';return false}
-   return true;
- }
- function update(){
-   $('count').textContent=entries.length+' nama';
-   $('spinBtn').disabled=spinning||entries.length<2;
-   $('live').textContent='';
-   draw();
- }
- function draw(){
-   const w=canvas.width,c=w/2,r=w*.465;ctx.clearRect(0,0,w,w);
-   ctx.beginPath();ctx.arc(c,c,r+12,0,TAU);ctx.fillStyle='#d9def8';ctx.fill();
-   if(!entries.length){ctx.beginPath();ctx.arc(c,c,r,0,TAU);ctx.fillStyle='#343d69';ctx.fill();ctx.fillStyle='#fff';ctx.font='bold 32px sans-serif';ctx.textAlign='center';ctx.fillText('Tambahkan nama',c,c);return}
-   const step=TAU/entries.length;
-   entries.forEach((entry,i)=>{
-     const start=angle+i*step,end=start+step;
-     ctx.beginPath();ctx.moveTo(c,c);ctx.arc(c,c,r,start,end);ctx.closePath();ctx.fillStyle=palette[i%palette.length];ctx.fill();ctx.strokeStyle='#ffffffaa';ctx.lineWidth=3;ctx.stroke();
-     if(entries.length<=36){
-       ctx.save();ctx.translate(c,c);ctx.rotate(start+step/2);ctx.textAlign='right';ctx.textBaseline='middle';ctx.fillStyle='#fff';
-       const font=Math.max(15,Math.min(27,300/Math.max(8,entry.name.length)));ctx.font=`800 ${font}px system-ui`;
-       let label=entry.name;if(label.length>23)label=label.slice(0,21)+'…';
-       ctx.shadowColor='#0006';ctx.shadowBlur=4;ctx.fillText(label,r-30,0);ctx.restore();
-     }
-   });
-   ctx.beginPath();ctx.arc(c,c,23,0,TAU);ctx.fillStyle='#fff';ctx.fill();
- }
- function pickEntry(){
-   const first=entries.find(x=>x.order==='first');
-   const last=entries.find(x=>x.order==='last');
-   if(first)return first;
-   const normal=entries.filter(x=>x.order!=='last');
-   if(normal.length>1)return normal[secureIndex(normal.length)];
-   if(normal.length===1)return normal[0];
-   return last||entries[secureIndex(entries.length)];
- }
- function playTone(){
-   if(!$('sound').checked)return;
-   try{const ac=new (window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);o.frequency.setValueAtTime(660,ac.currentTime);o.frequency.exponentialRampToValueAtTime(990,ac.currentTime+.18);g.gain.setValueAtTime(.12,ac.currentTime);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+.35);o.start();o.stop(ac.currentTime+.36)}catch(e){}
- }
- function spin(){
-   if(spinning)return;
-   if(entries.length<2){$('status').textContent='Tambahkan minimal dua nama terlebih dahulu.';return}
-   const winner=pickEntry(),index=entries.findIndex(x=>x.id===winner.id);
-   const step=TAU/entries.length;
-   const current=((angle%TAU)+TAU)%TAU;
-   const targetMod=((-(index+.5)*step%TAU)+TAU)%TAU;
-   const delta=(targetMod-current+TAU)%TAU;
-   const extra=TAU*(5+secureIndex(4));
-   const start=angle,finish=angle+extra+delta,duration=Number($('duration').value)*1000,startTime=performance.now();
-   spinning=true;$('spinBtn').disabled=true;$('status').textContent='Roda sedang berputar...';
-   function frame(now){
-     const t=Math.min(1,(now-startTime)/duration),ease=1-Math.pow(1-t,4);
-     angle=start+(finish-start)*ease;draw();
-     if(t<1){requestAnimationFrame(frame)}else{
-       angle=finish;spinning=false;
-       if($('removeWinner').checked)entries=entries.filter(x=>x.id!==winner.id);
-       history.unshift({name:winner.name,time:new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})});
-       history=history.slice(0,50);renderHistory();update();playTone();
-       $('status').textContent='Selamat kepada '+winner.name+'!';
-       $('winnerName').textContent=winner.name;$('winnerModal').classList.add('show');
-     }
-   }
-   requestAnimationFrame(frame);
- }
- function renderHistory(){
-   $('history').innerHTML=history.length?history.map((h,i)=>`<div class="history-item"><span>${i+1}. ${escapeHtml(h.name)}</span><span>${h.time}</span></div>`).join(''):'<div class="hint">Belum ada pemenang.</div>';
- }
- function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
- $('applyBtn').onclick=()=>{const list=parseNames();if(!validate(list))return;entries=list;$('status').textContent='Daftar peserta berhasil diterapkan.';update()};
- $('spinBtn').onclick=spin;
- $('shuffleBtn').onclick=()=>{if(spinning)return;const list=parseNames();if(!list.length)return;const first=list.find(x=>x.order==='first'),last=list.find(x=>x.order==='last'),middle=list.filter(x=>x.order==='normal');for(let i=middle.length-1;i>0;i--){const j=secureIndex(i+1);[middle[i],middle[j]]=[middle[j],middle[i]]}entries=[...(first?[first]:[]),...middle,...(last?[last]:[])];$('names').value=entries.map(x=>x.name+(x.order==='first'?',':x.order==='last'?'.':'')).join('\n');$('status').textContent='Urutan nama biasa berhasil diacak.';update()};
- $('sampleBtn').onclick=()=>{$('names').value='Andi,\nBudi\nCitra\nDewi\nEko\nFani\nGilang\nHana.';const list=parseNames();entries=list;history=[];renderHistory();$('status').textContent='Contoh peserta dimuat.';update()};
- $('clearBtn').onclick=()=>{if(spinning)return;$('names').value='';entries=[];$('status').textContent='Daftar peserta dikosongkan.';update()};
- $('clearHistory').onclick=()=>{history=[];renderHistory()};
- $('closeModal').onclick=()=>$('winnerModal').classList.remove('show');
- $('winnerModal').onclick=e=>{if(e.target===$('winnerModal'))$('winnerModal').classList.remove('show')};
- $('names').addEventListener('input',()=>{$('count').textContent=parseNames().length+' nama (belum diterapkan)'});
- document.addEventListener('keydown',e=>{if(e.ctrlKey&&e.key==='Enter'){e.preventDefault();spin()}if(e.key==='Escape')$('winnerModal').classList.remove('show')});
- $('sampleBtn').click();
+
+    const $ = id => document.getElementById(id);
+
+    const canvas = $('wheel');
+    const ctx = canvas.getContext('2d');
+
+    const palette = [
+        '#7868e6',
+        '#ed6a9e',
+        '#2db8bd',
+        '#f1a64b',
+        '#5278d8',
+        '#a66bd1',
+        '#e06c58',
+        '#3d9b78',
+        '#d45eae',
+        '#6d8fd5'
+    ];
+
+    const TAU = Math.PI * 2;
+
+    let entries = [];
+    let angle = -Math.PI / 2;
+    let spinning = false;
+    let history = [];
+
+    // RANDOM YANG MERATA
+
+    function secureIndex(max) {
+
+        if (max <= 1) return 0;
+
+        const array = new Uint32Array(1);
+
+        const limit =
+            Math.floor(0x100000000 / max) * max;
+
+        do {
+            crypto.getRandomValues(array);
+        } while (array[0] >= limit);
+
+        return array[0] % max;
+    }
+
+    // MEMBACA DAFTAR NAMA
+
+    function parseNames() {
+
+        return $('names').value
+            .split(/\r?\n/)
+            .map((raw, i) => {
+
+                const value = raw.trim();
+
+                if (!value) return null;
+
+                const last = value.slice(-1);
+
+                let order = 'normal';
+
+                if (last === ',') {
+                    order = 'first';
+                }
+
+                if (last === '.') {
+                    order = 'last';
+                }
+
+                const name =
+                    order === 'normal'
+                    ? value
+                    : value.slice(0, -1).trim();
+
+                if (!name) return null;
+
+                return {
+                    id: i + '-' + name + '-' +
+                        Math.random().toString(36).slice(2, 8),
+                    name: name,
+                    order: order
+                };
+
+            })
+            .filter(Boolean);
+    }
+
+    // VALIDASI NAMA
+
+    function validate(list) {
+
+        const first =
+            list.filter(x => x.order === 'first');
+
+        const last =
+            list.filter(x => x.order === 'last');
+
+        if (first.length > 1) {
+            $('status').textContent =
+                'Gunakan maksimal satu nama bertanda koma (,).';
+            return false;
+        }
+
+        if (last.length > 1) {
+            $('status').textContent =
+                'Gunakan maksimal satu nama bertanda titik (.).';
+            return false;
+        }
+
+        if (list.length < 1) {
+            $('status').textContent =
+                'Masukkan minimal satu nama peserta.';
+            return false;
+        }
+
+        return true;
+    }
+
+    // MEMPERBARUI TAMPILAN
+
+    function update() {
+
+        $('count').textContent =
+            entries.length + ' nama';
+
+        $('hubSpin').classList.toggle(
+            'disabled',
+            spinning || entries.length === 0
+        );
+
+        draw();
+    }
+
+    // MENGGAMBAR RODA
+
+    function draw() {
+
+        const w = canvas.width;
+        const c = w / 2;
+        const r = w * .465;
+
+        ctx.clearRect(0, 0, w, w);
+
+        ctx.beginPath();
+        ctx.arc(c, c, r + 12, 0, TAU);
+        ctx.fillStyle = '#d9def8';
+        ctx.fill();
+
+        if (!entries.length) {
+
+            ctx.beginPath();
+            ctx.arc(c, c, r, 0, TAU);
+
+            ctx.fillStyle = '#343d69';
+            ctx.fill();
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 32px sans-serif';
+            ctx.textAlign = 'center';
+
+            ctx.fillText(
+                'Tambahkan nama',
+                c,
+                c
+            );
+
+            return;
+        }
+
+        const step = TAU / entries.length;
+
+        entries.forEach((entry, i) => {
+
+            const start = angle + i * step;
+            const end = start + step;
+
+            ctx.beginPath();
+            ctx.moveTo(c, c);
+            ctx.arc(c, c, r, start, end);
+            ctx.closePath();
+
+            ctx.fillStyle =
+                palette[i % palette.length];
+
+            ctx.fill();
+
+            ctx.strokeStyle = '#ffffffaa';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            if (entries.length <= 40) {
+
+                ctx.save();
+
+                ctx.translate(c, c);
+                ctx.rotate(start + step / 2);
+
+                ctx.textAlign = 'right';
+                ctx.textBaseline = 'middle';
+                ctx.fillStyle = '#ffffff';
+
+                const font = Math.max(
+                    15,
+                    Math.min(27, 300 / Math.max(8, entry.name.length))
+                );
+
+                ctx.font = `800 ${font}px system-ui`;
+
+                let label = entry.name;
+
+                if (label.length > 23) {
+                    label = label.slice(0, 21) + '...';
+                }
+
+                ctx.shadowColor = '#0006';
+                ctx.shadowBlur = 4;
+
+                ctx.fillText(
+                    label,
+                    r - 30,
+                    0
+                );
+
+                ctx.restore();
+            }
+
+        });
+
+        ctx.beginPath();
+        ctx.arc(c, c, 23, 0, TAU);
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+
+    }
+
+    // MENENTUKAN PEMENANG
+
+    function pickEntry() {
+
+        const first = entries.find(
+            x => x.order === 'first'
+        );
+
+        const last = entries.find(
+            x => x.order === 'last'
+        );
+
+        // KOMA SELALU MENJADI PILIHAN PERTAMA
+
+        if (first) {
+            return first;
+        }
+
+        // NAMA BERTITIK DISIMPAN UNTUK TERAKHIR
+
+        const normal = entries.filter(
+            x => x.order !== 'last'
+        );
+
+        // JIKA MASIH ADA NAMA BIASA,
+        // PILIH SECARA ACAK
+
+        if (normal.length > 0) {
+
+            return normal[
+                secureIndex(normal.length)
+            ];
+
+        }
+
+        // JIKA HANYA TERSISA NAMA BERTITIK
+
+        return last || entries[
+            secureIndex(entries.length)
+        ];
+    }
+
+    // EFEK SUARA
+
+    function playTone() {
+
+        if (!$('sound').checked) return;
+
+        try {
+
+            const ac =
+                new (window.AudioContext ||
+                window.webkitAudioContext)();
+
+            const oscillator =
+                ac.createOscillator();
+
+            const gain =
+                ac.createGain();
+
+            oscillator.connect(gain);
+            gain.connect(ac.destination);
+
+            oscillator.frequency.setValueAtTime(
+                660,
+                ac.currentTime
+            );
+
+            oscillator.frequency.exponentialRampToValueAtTime(
+                990,
+                ac.currentTime + .18
+            );
+
+            gain.gain.setValueAtTime(
+                .12,
+                ac.currentTime
+            );
+
+            gain.gain.exponentialRampToValueAtTime(
+                .001,
+                ac.currentTime + .35
+            );
+
+            oscillator.start();
+
+            oscillator.stop(
+                ac.currentTime + .36
+            );
+
+        } catch (e) {}
+
+    }
+
+    // PROSES SPIN
+
+    function spin() {
+
+        if (spinning) return;
+
+        if (entries.length < 1) {
+
+            $('status').textContent =
+                'Tambahkan nama peserta terlebih dahulu.';
+
+            return;
+        }
+
+        const winner = pickEntry();
+
+        const index = entries.findIndex(
+            x => x.id === winner.id
+        );
+
+        const step = TAU / entries.length;
+
+        const current =
+            ((angle % TAU) + TAU) % TAU;
+
+        const targetMod =
+            ((-(index + .5) * step % TAU) + TAU) % TAU;
+
+        const delta =
+            (targetMod - current + TAU) % TAU;
+
+        const extra =
+            TAU * (5 + secureIndex(4));
+
+        const start = angle;
+        const finish = angle + extra + delta;
+
+        const duration =
+            Number($('duration').value) * 1000;
+
+        const startTime = performance.now();
+
+        spinning = true;
+
+        $('status').textContent =
+            'Roda sedang berputar...';
+
+        update();
+
+        function frame(now) {
+
+            const t = Math.min(
+                1,
+                (now - startTime) / duration
+            );
+
+            const ease =
+                1 - Math.pow(1 - t, 4);
+
+            angle =
+                start + (finish - start) * ease;
+
+            draw();
+
+            if (t < 1) {
+
+                requestAnimationFrame(frame);
+
+            } else {
+
+                angle = finish;
+
+                spinning = false;
+
+                // HAPUS PEMENANG JIKA PENGATURAN AKTIF
+
+                if ($('removeWinner').checked) {
+
+                    entries = entries.filter(
+                        x => x.id !== winner.id
+                    );
+
+                }
+
+                // SIMPAN RIWAYAT
+
+                history.unshift({
+
+                    name: winner.name,
+
+                    time: new Date().toLocaleTimeString(
+                        'id-ID',
+                        {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        }
+                    )
+
+                });
+
+                history = history.slice(0, 50);
+
+                renderHistory();
+
+                update();
+
+                playTone();
+
+                $('status').textContent =
+                    'Selamat kepada ' + winner.name + '!';
+
+                $('winnerName').textContent =
+                    winner.name;
+
+                $('winnerModal').classList.add('show');
+
+            }
+
+        }
+
+        requestAnimationFrame(frame);
+
+    }
+
+    // MENAMPILKAN RIWAYAT
+
+    function renderHistory() {
+
+        $('history').innerHTML =
+            history.length
+
+            ? history.map((h, i) => `
+
+                <div class="history-item">
+
+                    <span>
+                        ${i + 1}. ${escapeHtml(h.name)}
+                    </span>
+
+                    <span>${h.time}</span>
+
+                </div>
+
+            `).join('')
+
+            : '<div class="hint">Belum ada pemenang.</div>';
+
+    }
+
+    // MENGAMANKAN TEKS NAMA
+
+    function escapeHtml(s) {
+
+        return s.replace(/[&<>"']/g, c => ({
+
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+
+        }[c]));
+
+    }
+
+    // TERAPKAN DAFTAR PESERTA
+
+    $('applyBtn').onclick = () => {
+
+        if (spinning) return;
+
+        const list = parseNames();
+
+        if (!validate(list)) return;
+
+        entries = list;
+
+        $('status').textContent =
+            'Daftar peserta berhasil diterapkan.';
+
+        update();
+
+    };
+
+    // ACAK URUTAN NAMA BIASA
+
+    $('shuffleBtn').onclick = () => {
+
+        if (spinning) return;
+
+        const list = parseNames();
+
+        if (!list.length) return;
+
+        const first = list.find(
+            x => x.order === 'first'
+        );
+
+        const last = list.find(
+            x => x.order === 'last'
+        );
+
+        const normal = list.filter(
+            x => x.order === 'normal'
+        );
+
+        for (let i = normal.length - 1; i > 0; i--) {
+
+            const j = secureIndex(i + 1);
+
+            [normal[i], normal[j]] =
+                [normal[j], normal[i]];
+
+        }
+
+        entries = [
+            ...(first ? [first] : []),
+            ...normal,
+            ...(last ? [last] : [])
+        ];
+
+        $('names').value = entries.map(x =>
+            x.name +
+            (x.order === 'first' ? ',' :
+            x.order === 'last' ? '.' : '')
+        ).join('\n');
+
+        $('status').textContent =
+            'Urutan nama berhasil diacak.';
+
+        update();
+
+    };
+
+    // CONTOH NAMA
+
+    $('sampleBtn').onclick = () => {
+
+        if (spinning) return;
+
+        $('names').value =
+            'Andi,\nBudi\nCitra\nDewi\nEko\nFani\nGilang\nHana.';
+
+        const list = parseNames();
+
+        if (!validate(list)) return;
+
+        entries = list;
+
+        history = [];
+
+        renderHistory();
+
+        $('status').textContent =
+            'Contoh peserta berhasil dimuat.';
+
+        update();
+
+    };
+
+    // HAPUS SEMUA NAMA
+
+    $('clearBtn').onclick = () => {
+
+        if (spinning) return;
+
+        $('names').value = '';
+
+        entries = [];
+
+        $('status').textContent =
+            'Daftar peserta dikosongkan.';
+
+        update();
+
+    };
+
+    // BERSIHKAN RIWAYAT
+
+    $('clearHistory').onclick = () => {
+
+        history = [];
+
+        renderHistory();
+
+    };
+
+    // TOMBOL SPIN DI TENGAH RODA
+
+    $('hubSpin').onclick = spin;
+
+    $('hubSpin').onkeydown = e => {
+
+        if (e.key === 'Enter' || e.key === ' ') {
+
+            e.preventDefault();
+
+            spin();
+
+        }
+
+    };
+
+    // TUTUP POPUP
+
+    $('closeModal').onclick = () => {
+
+        $('winnerModal').classList.remove('show');
+
+    };
+
+    $('winnerModal').onclick = e => {
+
+        if (e.target === $('winnerModal')) {
+
+            $('winnerModal').classList.remove('show');
+
+        }
+
+    };
+
+    // UPDATE JUMLAH SAAT MENGETIK
+
+    $('names').addEventListener('input', () => {
+
+        $('count').textContent =
+            parseNames().length + ' nama (belum diterapkan)';
+
+    });
+
+    // SHORTCUT KEYBOARD
+
+    document.addEventListener('keydown', e => {
+
+        if (e.ctrlKey && e.key === 'Enter') {
+
+            e.preventDefault();
+
+            spin();
+
+        }
+
+        if (e.key === 'Escape') {
+
+            $('winnerModal').classList.remove('show');
+
+        }
+
+    });
+
+    // INISIALISASI
+
+    $('sampleBtn').click();
+
 })();
+
 </script>
+
 </body>
 </html>

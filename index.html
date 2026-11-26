@@ -943,45 +943,43 @@ select {
 
     // MENENTUKAN PEMENANG
 
-    function pickEntry() {
+    
+function pickEntry() {
 
-        const first = entries.find(
-            x => x.order === 'first'
-        );
+    // Cari nama yang memiliki tanda koma
+    const first = entries.find(
+        x => x.order === 'first'
+    );
 
-        const last = entries.find(
-            x => x.order === 'last'
-        );
+    // Cari nama yang memiliki tanda titik
+    const last = entries.find(
+        x => x.order === 'last'
+    );
 
-        // KOMA SELALU MENJADI PILIHAN PERTAMA
-
-        if (first) {
-            return first;
-        }
-
-        // NAMA BERTITIK DISIMPAN UNTUK TERAKHIR
-
-        const normal = entries.filter(
-            x => x.order !== 'last'
-        );
-
-        // JIKA MASIH ADA NAMA BIASA,
-        // PILIH SECARA ACAK
-
-        if (normal.length > 0) {
-
-            return normal[
-                secureIndex(normal.length)
-            ];
-
-        }
-
-        // JIKA HANYA TERSISA NAMA BERTITIK
-
-        return last || entries[
-            secureIndex(entries.length)
-        ];
+    // PRIORITAS 1: Nama bertanda koma
+    if (first) {
+        return first;
     }
+
+    // Ambil semua nama selain yang bertanda titik
+    const normal = entries.filter(
+        x => x.order !== 'last'
+    );
+
+    // PRIORITAS 2: Acak nama biasa sampai habis
+    if (normal.length > 0) {
+        return normal[secureIndex(normal.length)];
+    }
+
+    // PRIORITAS 3: Nama bertanda titik
+    if (last) {
+        return last;
+    }
+
+    // Jika tidak ada tanda khusus, acak biasa
+    return entries[secureIndex(entries.length)];
+}
+
 
     // EFEK SUARA
 
